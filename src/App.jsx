@@ -1,5 +1,10 @@
 import { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import List from "./pages/List";
+import Add from "./pages/Add";
+import Edit from "./pages/Edit";
+import Layout from "./pages/Layout";
 
 function App() {
   const [open, setOpen] = useState(false);
@@ -43,16 +48,19 @@ function App() {
           </button>
 
           {/* Menu desktop */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#" className="hover:text-gray-200">
+         <div className="hidden md:flex items-center space-x-8">
+            <Link to="/layout" className="hover:text-gray-200">
               Trang chủ
-            </a>
-            <a href="#" className="hover:text-gray-200">
+            </Link>
+            <Link to="/list" className="hover:text-gray-200">
               Danh sách
-            </a>
-            <a href="#" className="hover:text-gray-200">
+            </Link>
+            <Link to="/add" className="hover:text-gray-200">
               Thêm mới
-            </a>
+            </Link>
+            <Link to="/edit" className="hover:text-gray-200">
+              Sửa
+            </Link>
           </div>
 
           {/* Right menu desktop */}
@@ -65,29 +73,6 @@ function App() {
             </a>
           </div>
         </div>
-
-        {/* Mobile dropdown */}
-        {open && (
-          <div className="md:hidden bg-blue-700 border-t border-blue-500">
-            <div className="px-4 py-3 space-y-2">
-              <a href="#" className="block hover:text-gray-200">
-                Trang chủ
-              </a>
-              <a href="#" className="block hover:text-gray-200">
-                Danh sách
-              </a>
-              <a href="#" className="block hover:text-gray-200">
-                Thêm mới
-              </a>
-              <a href="#" className="block hover:text-gray-200">
-                Đăng nhập
-              </a>
-              <a href="#" className="block hover:text-gray-200">
-                Đăng ký
-              </a>
-            </div>
-          </div>
-        )}
       </nav>
 
       {/* MAIN CONTENT */}
@@ -95,7 +80,12 @@ function App() {
         <h1 className="text-4xl font-bold mb-4">Chào mừng đến với WEB501</h1>
         <p className="text-lg text-gray-600">Ứng dụng quản lý dữ liệu</p>
       </div>
-
+      <Routes>
+            <Route path="/list" element={<List />} />
+            <Route path="/add" element={<Add />} />
+            <Route path="/edit" element={<Edit />} />
+            <Route path="/layout" element={<Layout />} />
+        </Routes>
       <Toaster />
     </>
   );
