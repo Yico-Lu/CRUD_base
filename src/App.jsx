@@ -48,7 +48,7 @@ function App() {
           </button>
 
           {/* Menu desktop */}
-         <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8">
             <Link to="/layout" className="hover:text-gray-200">
               Trang chủ
             </Link>
@@ -73,6 +73,7 @@ function App() {
             </a>
           </div>
         </div>
+        
       </nav>
 
       {/* MAIN CONTENT */}
@@ -80,7 +81,7 @@ function App() {
         <h1 className="text-4xl font-bold mb-4">Chào mừng đến với WEB501</h1>
         <p className="text-lg text-gray-600">Ứng dụng quản lý dữ liệu</p>
       </div>
-      <Routes>
+        <Routes>
             <Route path="/list" element={<List />} />
             <Route path="/add" element={<Add />} />
             <Route path="/edit" element={<Edit />} />

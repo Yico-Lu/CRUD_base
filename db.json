@@ -1,7 +1,7 @@
 {
   "tours": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Hà Nội - Sapa 3N2D",
       "destination": "Sapa",
       "duration": "3 ngày 2 đêm",
@@ -11,7 +11,7 @@
       "available": 15
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Hạ Long - Cát Bà 2N1D",
       "destination": "Hạ Long",
       "duration": "2 ngày 1 đêm",
@@ -21,14 +21,16 @@
       "available": 20
     },
     {
-      "id": 3,
-      "name": "Đà Lạt 4N3D",
-      "destination": "Đà Lạt",
-      "duration": "4 ngày 3 đêm",
-      "price": 3200000,
-      "image": "https://picsum.photos/400/300?random=3",
-      "description": "Thành phố ngàn hoa với khí hậu mát mẻ quanh năm",
-      "available": 10
+      "id": "ca53",
+      "name": "Áo Real Madrid US Pack",
+      "destination": "ba na",
+      "duration": "3 ngay",
+      "price": 1999998,
+      "image": "https://newocean.edu.vn/wp-content/uploads/2025/01/chinh-tri-vuong-quoc-anh.jpg",
+      "description": "fdafafas",
+      "available": 22,
+      "category": "tour-quoc-te",
+      "active": true
     }
   ]
 }
