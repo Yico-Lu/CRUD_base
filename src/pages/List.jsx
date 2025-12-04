@@ -11,7 +11,7 @@ function List() {
     const fetchTours = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3001/tours");
+        const response = await axios.get("http://localhost:3000/tours");
         setTours(response.data);
       } catch (error) {
         toast.error("Lỗi khi lấy danh sách tours");
@@ -37,7 +37,7 @@ function List() {
         if (!confirm("Bạn chắc chắn muốn xóa Tour này chứ?")) return;
         setLoading(true);
         try {
-            await axios.delete(`http://localhost:3001/tours/${id}`);
+            await axios.delete(`http://localhost:3000/tours/${id}`);
             setTours(tours.filter((t) => t.id !== id));
             toast.success("Xóa tour thành công");
         } catch (error) {

@@ -2,22 +2,21 @@ import axios from 'axios';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-function AddPage() {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
+function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   // handleChange
 
   const handleSubmit = async event => {
     event.preventDefault(); // ngan can load form
     try {
-      await axios.post(' http://localhost:3000/tours', {
-        name,
-        price: Number(price),
-        category,
+      const { data } = await axios.post(' http://localhost:3000/login', {
+        email,
+        password,
       });
-      toast.success('Them tour duoc roi');
+      //   toast.success('Them tour duoc roi');
+      localStorage.setItem('token', data.accessToken);
     } catch (error) {
       toast.error(error.message);
     }
@@ -30,43 +29,27 @@ function AddPage() {
         {/* Text input */}
         <div>
           <label htmlFor="text" className="block font-medium mb-1">
-            Name
+            Email
           </label>
           <input
-            value={name} // document.getElementBy(id).value
-            onChange={event => setName(event.target.value)}
-            type="text"
+            value={email} // document.getElementBy(id).value
+            onChange={event => setEmail(event.target.value)}
+            type="email"
             id="text"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div>
           <label htmlFor="text" className="block font-medium mb-1">
-            Price
+            Password
           </label>
           <input
-            value={price}
-            onChange={event => setPrice(event.target.value)}
-            type="number"
+            value={password}
+            onChange={event => setPassword(event.target.value)}
+            type="password"
             id="text"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-        </div>
-
-        {/* Select */}
-        <div>
-          <label htmlFor="selectOption" className="block font-medium mb-1">
-            Category
-          </label>
-          <select
-            value={category}
-            onChange={e => setCategory(e.target.value)}
-            id="selectOption"
-            className="w-full border rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="Tour Noi dia">Tour Noi dia</option>
-            <option value="Tour Quoc te">Tour Quoc te</option>
-          </select>
         </div>
 
         {/* Submit button */}
@@ -81,4 +64,4 @@ function AddPage() {
   );
 }
 
-export default AddPage;
+export default LoginPage;

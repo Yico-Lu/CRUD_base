@@ -1,212 +1,101 @@
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import toast from "react-hot-toast";
-import axios from "axios";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { useParams } from 'react-router-dom';
 
-function Edit() {
-  const navigate = useNavigate();
+function EditPage() {
   const { id } = useParams();
 
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    destination: "",
-    duration: "",
-    price: "",
-    image: "",
-    description: "",
-    available: "",
-    category: "",
-    active: true,
-  });
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [category, setCategory] = useState('');
 
-  // Lấy dữ liệu tour theo id
   useEffect(() => {
-    async function fetchData() {
+    const getTour = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/tours/${id}`);
-        setFormData(res.data);
+        const { data } = await axios.get(`http://localhost:3000/tours/${id}`);
+        setName(data.name);
+        setPrice(data.price);
+        setCategory(data.category);
       } catch (error) {
-        toast.error("Không lấy được dữ liệu tour");
+        toast.error('Loi API');
       }
-    }
-    fetchData();
+    };
+    getTour(id);
   }, [id]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
-  };
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // handleChange
 
-    if (!formData.name || !formData.destination || !formData.price || !formData.duration) {
-      toast.error("Vui lòng điền đầy đủ thông tin");
-      return;
-    }
-
+  const handleSubmit = async event => {
+    event.preventDefault(); // ngan can load form
     try {
-      setLoading(true);
-      const data = {
-        ...formData,
-        price: parseInt(formData.price) || 0,
-        available: parseInt(formData.available) || 0,
-      };
-
-      const response = await axios.put(`http://localhost:3001/tours/${id}`, data);
-
-      if (response.status >= 200 && response.status < 300) {
-        toast.success("Cập nhật tour thành công");
-        navigate("/list");
-      } else {
-        throw new Error("Lỗi khi cập nhật tour");
-      }
+      await axios.put(`http://localhost:3000/tours/${id}`, {
+        name,
+        price: Number(price),
+        category,
+      });
+      toast.success('Cap nhat tour duoc roi');
     } catch (error) {
-      toast.error("Lỗi: " + error.message);
-      console.error(error);
-    } finally {
-      setLoading(false);
+      toast.error(error.message);
     }
   };
-
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-semibold mb-6 text-center">Chỉnh sửa tour</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-semibold mb-6">Update Tour ID :{id}</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-lg shadow">
-        
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        {/* Text input */}
         <div>
-          <label className="block font-medium mb-1">
-            Tên tour <span className="text-red-500">*</span>
+          <label htmlFor="text" className="block font-medium mb-1">
+            Name
           </label>
           <input
+            value={name} // document.getElementBy(id).value
+            onChange={event => setName(event.target.value)}
             type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="VD: Đà Lạt 4N3D"
+            id="text"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
         <div>
-          <label className="block font-medium mb-1">
-            Điểm đến <span className="text-red-500">*</span>
+          <label htmlFor="text" className="block font-medium mb-1">
+            Price
           </label>
           <input
-            type="text"
-            name="destination"
-            value={formData.destination}
-            onChange={handleChange}
-            placeholder="VD: Đà Lạt"
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">
-            Thời gian <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            name="duration"
-            value={formData.duration}
-            onChange={handleChange}
-            placeholder="VD: 4 ngày 3 đêm"
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">
-            Giá (VND) <span className="text-red-500">*</span>
-          </label>
-          <input
+            value={price}
+            onChange={event => setPrice(event.target.value)}
             type="number"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="VD: 3200000"
+            id="text"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
+        {/* Select */}
         <div>
-          <label className="block font-medium mb-1">URL Ảnh</label>
-          <input
-            type="text"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
-            placeholder="VD: https://picsum.photos/400/300?random=3"
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Mô tả</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Nhập mô tả tour"
-            rows="3"
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Số chỗ còn</label>
-          <input
-            type="number"
-            name="available"
-            value={formData.available}
-            onChange={handleChange}
-            placeholder="VD: 10"
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Loại tour</label>
+          <label htmlFor="selectOption" className="block font-medium mb-1">
+            Category
+          </label>
           <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
+            value={category}
+            onChange={e => setCategory(e.target.value)}
+            id="selectOption"
             className="w-full border rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="tour-noi-dia">Tour nội địa</option>
-            <option value="tour-quoc-te">Tour quốc tế</option>
-            <option value="tour-theo-yeu-cau">Tour theo yêu cầu</option>
+            <option value="Tour Noi dia">Tour Noi dia</option>
+            <option value="Tour Quoc te">Tour Quoc te</option>
           </select>
         </div>
 
-        <div className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            name="active"
-            checked={formData.active}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 rounded border-gray-300 cursor-pointer"
-          />
-          <label className="font-medium cursor-pointer">Kích hoạt tour</label>
-        </div>
-
-        <div className="flex gap-3">
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
-          >
-            {loading ? "Đang lưu..." : "Cập nhật"}
-          </button>
-        </div>
+        {/* Submit button */}
+        <button
+          type="submit"
+          className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
 }
 
-export default Edit;
+export default EditPage;
